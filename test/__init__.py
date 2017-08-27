@@ -1,5 +1,6 @@
 from goonbag.wsgi import WsgiApplication
 from goonbag import Routes, Handler
+from goonbag.utils.json import returns_json
 
 api = Routes()
 
@@ -19,5 +20,13 @@ class Greet(Handler):
 def double(request, number):
     return str(number * 2)
 
+
+@api.route('/get/json/')
+@returns_json
+def json_endpoint(request):
+    return {
+        'data': [1, 2, 3],
+        'errors': None,
+    }
 
 application = WsgiApplication(api)

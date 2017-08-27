@@ -55,7 +55,7 @@ class handler:
     def __new__(cls, *args, **kwargs):
         if not args:
             return partial(cls, **kwargs)
-        return super().__new__(cls, *args, **kwargs)
+        return super().__new__(cls)
 
     def __init__(self, func, status=None, content_type=None, headers=None):
         self.func = func
@@ -64,7 +64,8 @@ class handler:
         self.status = status
         if content_type:
             self.content_type = content_type
-        headers = HeaderDict(headers)
+        if headers is None:
+            headers = dict()
         headers.setdefault('Content-Type', self.content_type)
         self.headers = headers
         update_wrapper(self, func)
