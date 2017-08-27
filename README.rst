@@ -8,6 +8,7 @@ GOONBAG
 
 
 .. code-block:: python
+
     api = Routes()
 
     @api.route('/foo/{bar}/', ....)
