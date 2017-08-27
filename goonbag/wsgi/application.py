@@ -8,7 +8,7 @@ class WsgiApplication(Application):
 
         path = env.get('PATH_INFO', b'/')
 
-        route_match = self.routes.resolvematch(path)
+        route_match = self.routes.resolve(path)
         if route_match is None:
             # 404!
             start_response('400 Not Found', {})

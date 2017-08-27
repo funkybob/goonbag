@@ -1,3 +1,4 @@
+import inspect
 import parse
 from collections import namedtuple
 
@@ -12,8 +13,8 @@ from .handler import Handler
 class RouteMatch(namedtuple('_RouteMatch', ('routes', 'pattern', 'handler', 'match'))):
     def dispatch(self, request):
         handler = self.handler
-        if issubclass(handler, Handler):
-            handler = handler()
+        if inspect.isclass(handler):
+            handler = handler(request)
         return handler(request, **self.match.named)
 
 
