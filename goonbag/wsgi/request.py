@@ -29,6 +29,10 @@ class WsgiRequest(Request):
         return self.environ['wsgi.input'].read(size)
 
     @cached_property
+    def post(self):
+        return cgi.FieldStorage(self.environ['wsgi.input'], self.headers, keep_blank_values=True)
+
+    @cached_property
     def raw_cookies(self):
         '''Raw access to cookies'''
         cookie_data = self.environ.get('HTTP_COOKIE', '')
