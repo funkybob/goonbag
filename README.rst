@@ -14,21 +14,23 @@ GOONBAG
 
 .. code-block:: python
 
-    from goonbag import Routes, Handler
+    from goonbag import Routes, Handler, handler
+    from goonbag.utils.json import returns_json
 
     api = Routes()
 
     @api.route('/foo/{bar}/', ....)
-    @responds(status=200, content_type='application/json')
+    @handler
     def handler(request):
         ...
         return content: iterable
 
-        # Not currently implemented
-        return status:int, content: iterable
 
-        # Not currently implemented
-        return status:int, content: iterable, headers:dict
+    @api.route('/baz/data')
+    @returns_json
+    def handler(request):
+        ...
+        return {...}
 
 
     @api.route('/baz/')
