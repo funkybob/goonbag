@@ -1,5 +1,4 @@
-from .response import Response
-from . import http
+from . import response
 
 
 class Handler:
@@ -17,15 +16,16 @@ class Handler:
         func = getattr(self, request.method.lower(), self.invalid_method)
         try:
             result = func(request, **kwargs)
-        except http.Response as resp:
+        except response.Response as resp:
             return resp
         if isinstance(result, str):
             status = self.get_status(result)
             headers = self.get_headers(result)
             return self.make_response(status, result, headers)
+        # ???
 
     def invalid_method(self, request, **kwargs):
-        raise http.MethodNotAllowed()
+        raise response.MethodNotAllowed([])
 
     def get_status(self, result):
         return self.default_status
@@ -36,4 +36,4 @@ class Handler:
         }
 
     def make_response(self, status, result, headers):
-        return Response(status, result, headers)
+        return response.Response(status, result, headers)

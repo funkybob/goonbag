@@ -1,12 +1,20 @@
 import parse
 from collections import namedtuple
 
+from .handler import Handler
+
 # TODO:
 # - nested routes
 # - named rules
 # - reverse
 
-RouteMatch = namedtuple('RouteMatch', ('routes', 'pattern', 'handler', 'match'))
+
+class RouteMatch(namedtuple('_RouteMatch', ('routes', 'pattern', 'handler', 'match'))):
+    def dispatch(self, request):
+        handler = self.handler
+        if issubclass(handler, Handler):
+            handler = handler()
+        return handler(request, **self.match.named)
 
 
 class Routes:
@@ -16,7 +24,7 @@ class Routes:
     def build_parse(self, pattern):
         return parse.compile(pattern)
 
-    def route(self, pattern, handler=None):
+    def route(self, pattern):
         '''
         Decorator to add a new route to the list.
 
