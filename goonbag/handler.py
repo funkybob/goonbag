@@ -61,7 +61,6 @@ class handler:
         self.func = func
         if status is not None:
             self.status = status
-        self.status = status
         if content_type:
             self.content_type = content_type
         if headers is None:
@@ -74,7 +73,10 @@ class handler:
         return resp.encode(self.encoding)
 
     def __call__(self, request, **kwargs):
-        resp = self.func(request, **kwargs)
+        try:
+            resp = self.func(request, **kwargs)
+        except response.Response as resp:
+            return resp
         if not isinstance(resp, Response):
             resp = self.encode_response(resp)
             resp = Response(self.status, resp, self.headers)
