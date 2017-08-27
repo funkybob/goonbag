@@ -36,6 +36,15 @@ GOONBAG
         def get(self, request, \**url_params):
             return 'content'
 
+Since routing uses `parse <https://pypi.org/project/parse/>`_ we can even cast
+values on parse:
+
+.. code-block:: python
+
+    @api.route('/math/double/{value:d}')
+    def double(request, value):
+        # Value is already an int
+        return str(value * 2)
 
 
 To make a WSGI Application:
@@ -44,5 +53,5 @@ To make a WSGI Application:
 
     from goonbag.wsgi import WsgiApplication
 
-    application = WsgiApplication(routes=myroutes)
+    application = WsgiApplication(routes=api)
 
