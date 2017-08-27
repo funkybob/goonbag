@@ -1,6 +1,11 @@
 GOONBAG
 =======
 
+.. note::
+
+  I am still looking for a better name than this. Come on, people, help me out
+  here :)
+
 - do work a most once
 - use parse / format for url lookup / reverse
 - use stencil?
