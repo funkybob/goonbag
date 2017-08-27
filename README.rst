@@ -27,7 +27,7 @@ GOONBAG
 
 
     @api.route('/baz/data')
-    @returns_json
+    @json_handler
     def handler(request):
         ...
         return {...}

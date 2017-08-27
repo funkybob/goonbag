@@ -2,7 +2,7 @@ from functools import update_wrapper, partial
 
 from . import response
 from .response import Response
-from .utils import HeaderDict
+from .utils.json import json
 
 
 class Handler:
@@ -79,3 +79,13 @@ class handler:
             resp = self.encode_response(resp)
             resp = Response(self.status, resp, self.headers)
         return resp
+
+
+class json_handler(handler):
+    '''
+    Decorator to help for a handler which returns JSON
+    '''
+    content_type = 'application/json'
+
+    def encode_response(self, resp):
+        return json.dumps(resp)

@@ -1,9 +1,9 @@
 import cgi
-from http.cookies import SimpleCookie
 from urllib.parse import parse_qs
 
 from ..request import Request
 from ..utils import HeaderDict, cached_property
+from ..utils.json import json
 
 
 class WsgiRequest(Request):
@@ -33,22 +33,8 @@ class WsgiRequest(Request):
         return cgi.FieldStorage(self.environ['wsgi.input'], self.headers, keep_blank_values=True)
 
     @cached_property
-    def raw_cookies(self):
-        '''Raw access to cookies'''
-        cookie_data = self.environ.get('HTTP_COOKIE', '')
-        cookies = SimpleCookie()
-        if not cookie_data:
-            return cookies
-        cookies.load(cookie_data)
-        return cookies
-
-    @cached_property
-    def cookies(self):
-        '''Simplified Cookie access'''
-        return {
-            key: self.raw_cookies[key].value
-            for key in self.raw_cookies.keys()
-        }
+    def json(self):
+        return json.load(self.environ['wsgi.input'])
 
     @cached_property
     def query(self):
