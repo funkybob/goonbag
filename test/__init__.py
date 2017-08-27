@@ -15,4 +15,9 @@ class Greet(Handler):
         return 'Hello, {}'.format(request.query.get('name', 'friend'))
 
 
+@api.route('/double/{number:d}')
+def double(request, number):
+    return str(number * 2)
+
+
 application = WsgiApplication(api)
