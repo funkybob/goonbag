@@ -1,4 +1,8 @@
+from functools import update_wrapper, partial
+
 from . import response
+from .response import Response
+from .utils import HeaderDict
 
 
 class Handler:
@@ -37,3 +41,40 @@ class Handler:
 
     def make_response(self, status, result, headers):
         return response.Response(status, result, headers)
+
+
+class handler:
+    '''
+    Decorator to help functions return responses
+    '''
+    encoding = 'utf-8'
+    status = 200
+    content_type = 'text/html'
+    headers = None
+
+    def __new__(cls, *args, **kwargs):
+        if not args:
+            return partial(cls, **kwargs)
+        return super().__new__(cls, *args, **kwargs)
+
+    def __init__(self, func, status=None, content_type=None, headers=None):
+        self.func = func
+        if status is not None:
+            self.status = status
+        self.status = status
+        if content_type:
+            self.content_type = content_type
+        headers = HeaderDict(headers)
+        headers.setdefault('Content-Type', self.content_type)
+        self.headers = headers
+        update_wrapper(self, func)
+
+    def encode_response(self, resp):
+        return resp.encode(self.encoding)
+
+    def __call__(self, request, **kwargs):
+        resp = self.func(request, **kwargs)
+        if not isinstance(resp, Response):
+            resp = self.encode_response(resp)
+            resp = Response(self.status, resp, self.headers)
+        return resp
