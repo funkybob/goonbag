@@ -9,6 +9,8 @@ GOONBAG
 
 .. code-block:: python
 
+    from goonbag import Routes, Handler
+
     api = Routes()
 
     @api.route('/foo/{bar}/', ....)
@@ -28,4 +30,14 @@ GOONBAG
 
         def get(self, request, \**url_params):
             return 'content'
+
+
+
+To make a WSGI Application:
+
+.. code-block:: python
+
+    from goonbag.wsgi import WsgiApplication
+
+    application = WsgiApplication(routes=myroutes)
 
