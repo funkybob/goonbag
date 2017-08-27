@@ -24,8 +24,10 @@ GOONBAG
         ...
         return content: iterable
 
+        # Not currently implemented
         return status:int, content: iterable
 
+        # Not currently implemented
         return status:int, content: iterable, headers:dict
 
 
