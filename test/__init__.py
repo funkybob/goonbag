@@ -8,6 +8,7 @@ api = Routes()
 def index(request):
     return 'Welcome!'
 
+
 @api.route('/greet')
 class Greet(Handler):
     def get(self, request):

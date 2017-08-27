@@ -8,9 +8,9 @@ class Handler:
     def __init__(self, request):
         self.request = request
 
-    def __call__(self, **kwargs):
+    def __call__(self, request, **kwargs):
         self.kwargs = kwargs
-        return self.dispatch(self.request, **kwargs)
+        return self.dispatch(request, **kwargs)
 
     def dispatch(self, request, **kwargs):
         func = getattr(self, request.method.lower(), self.invalid_method)

@@ -1,1 +1,1 @@
-from .application import WsgiApplication
+from .application import WsgiApplication  # NOQA

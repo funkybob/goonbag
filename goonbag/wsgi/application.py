@@ -1,3 +1,4 @@
+
 from ..application import Application
 from .request import WsgiRequest
 
@@ -11,10 +12,10 @@ class WsgiApplication(Application):
         route_match = self.routes.resolve(path)
         if route_match is None:
             # 404!
-            start_response('400 Not Found', {})
+            start_response('400 Not Found', [])
             return []
 
-        response = route_match.dispatch(request)
+        response = self.dispatch(route_match, request)
 
         start_response(response.status, response.headers.items())
         return iter(response)

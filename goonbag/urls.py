@@ -1,21 +1,12 @@
-import inspect
 import parse
 from collections import namedtuple
-
-from .handler import Handler
 
 # TODO:
 # - nested routes
 # - named rules
 # - reverse
 
-
-class RouteMatch(namedtuple('_RouteMatch', ('routes', 'pattern', 'handler', 'match'))):
-    def dispatch(self, request):
-        handler = self.handler
-        if inspect.isclass(handler):
-            handler = handler(request)
-        return handler(request, **self.match.named)
+RouteMatch = namedtuple('RouteMatch', ('pattern', 'handler', 'kwargs'))
 
 
 class Routes:
@@ -44,5 +35,5 @@ class Routes:
         for pattern, handler in self.routes:
             m = pattern.parse(path)
             if m:
-                return RouteMatch(self, pattern, handler, m)
+                return RouteMatch(pattern, handler, m.named)
         return None

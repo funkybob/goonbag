@@ -8,9 +8,11 @@ class Response(Exception):
 
     With thanks to schinkel's repose.
     '''
-    def __init__(self, status, content, headers):
-        self.status = status
-        self.content = content
+    status_code = None
+
+    def __init__(self, status_code=None, content=None, headers=None):
+        self.status_code = status_code or self.status_code
+        self.content = content or ''
         self.headers = HeaderDict(headers)
 
     def __getitem__(self, key):
@@ -21,6 +23,10 @@ class Response(Exception):
 
     def __iter__(self):
         return iter(self.content)
+
+    @property
+    def status(self):
+        return '{} {}'.format(self.status_code, STATUS.get(self.status_code, ''))
 
 #
 # Success Responses (2xx)
