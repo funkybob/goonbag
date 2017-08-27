@@ -7,23 +7,24 @@ GOONBAG
 - decorators are cool, ok?
 
 
-api = Routes()
+.. code-block:: python
+    api = Routes()
 
-@api.route('/foo/{bar}/', ....)
-@responds(status=200, content_type='application/json')
-def handler(request):
-    ...
-    return content: iterable
+    @api.route('/foo/{bar}/', ....)
+    @responds(status=200, content_type='application/json')
+    def handler(request):
+        ...
+        return content: iterable
 
-    return status:int, content: iterable
+        return status:int, content: iterable
 
-    return status:int, content: iterable, headers:dict
+        return status:int, content: iterable, headers:dict
 
 
-@api.route('/baz/')
-class MyHandler(Handler):
-    default_content_type = 'application/json'
+    @api.route('/baz/')
+    class MyHandler(Handler):
+        default_content_type = 'application/json'
 
-    def get(self, request, \**url_params):
-        return 'content'
+        def get(self, request, \**url_params):
+            return 'content'
 
