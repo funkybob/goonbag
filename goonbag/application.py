@@ -8,21 +8,14 @@ class Application:
         self.routes = routes
         self.config = config
 
-    def dispatch(self, match, request):
-        handler = match.handler
+    def dispatch(self, handler, request):
         if inspect.isclass(handler):
             handler = handler(request)
         try:
-            response = handler(request, **match.kwargs)
+            return handler(request)
         except Response as resp:
             return resp
         except Exception as ex:
             # !! Raise 500 !!
             import traceback
             return InternalServerError(content=traceback.format_exc(ex))
-
-        if isinstance(response, Response):
-            return response
-
-        if isinstance(response, str):
-            return Response(200, response)

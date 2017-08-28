@@ -6,6 +6,11 @@ from .utils.json import json
 
 
 class Handler:
+    '''
+    Class-based Handler.
+
+    Dispatches requests based on method.
+    '''
     default_status = 200
     default_content_type = 'text/html'
 
@@ -25,6 +30,13 @@ class Handler:
         if isinstance(result, str):
             status = self.get_status(result)
             headers = self.get_headers(result)
+            return self.make_response(status, result, headers)
+
+        if isinstance(result, dict):
+            status = self.get_status(result)
+            headers = self.get_headers(result)
+            headers.setdefault('Content-Type', 'application/json')
+            result = json.dumps(result)
             return self.make_response(status, result, headers)
         # ???
 
@@ -57,7 +69,7 @@ class handler:
             return partial(cls, **kwargs)
         return super().__new__(cls)
 
-    def __init__(self, func, status=None, content_type=None, headers=None):
+    def __init__(self, func, status=None, content_type=None, headers=None, encoder=None):
         self.func = func
         if status is not None:
             self.status = status
@@ -67,6 +79,7 @@ class handler:
             headers = dict()
         headers.setdefault('Content-Type', self.content_type)
         self.headers = headers
+        self.encoder = encoder
         update_wrapper(self, func)
 
     def encode_response(self, resp):
@@ -78,16 +91,17 @@ class handler:
         except response.Response as resp:
             return resp
         if not isinstance(resp, Response):
-            resp = self.encode_response(resp)
+            if self.encoder:
+                resp = self.encoder(self, resp)
+            else:
+                resp = self.encode_response(resp)
             resp = Response(self.status, resp, self.headers)
         return resp
 
-
-class json_handler(handler):
-    '''
-    Decorator to help for a handler which returns JSON
-    '''
-    content_type = 'application/json'
-
-    def encode_response(self, resp):
-        return json.dumps(resp)
+    @classmethod
+    def json(cls, func):
+        '''
+        Decorate a function to return JSON content.
+        '''
+        return cls(func, content_type='application/json',
+                   encoder=lambda self, resp: json.dumps(resp))

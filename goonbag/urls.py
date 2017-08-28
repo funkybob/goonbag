@@ -1,12 +1,11 @@
 import parse
-from collections import namedtuple
+
+from .response import NotFound
 
 # TODO:
-# - nested routes
 # - named rules
 # - reverse
-
-RouteMatch = namedtuple('RouteMatch', ('pattern', 'handler', 'kwargs'))
+# - route arguments?
 
 
 class Routes:
@@ -31,9 +30,9 @@ class Routes:
 
         return _inner
 
-    def resolve(self, path):
+    def __call__(self, request):
         for pattern, handler in self.routes:
-            m = pattern.parse(path)
+            m = pattern.parse(request.path)
             if m:
-                return RouteMatch(pattern, handler, m.named)
-        return None
+                return handler(request, **m.named)
+        return NotFound()
