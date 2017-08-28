@@ -1,10 +1,7 @@
 GOONBAG
 =======
 
-.. note::
-
-  I am still looking for a better name than this. Come on, people, help me out
-  here :)
+.. note:: I am still looking for a better name than this. Come on, people, help me out here :)
 
 - do work a most once
 - use parse / format for url lookup / reverse
@@ -15,7 +12,6 @@ GOONBAG
 .. code-block:: python
 
     from goonbag import Routes, Handler, handler
-    from goonbag.utils.json import returns_json
 
     api = Routes()
 
@@ -27,7 +23,7 @@ GOONBAG
 
 
     @api.route('/baz/data')
-    @json_handler
+    @handler.json
     def handler(request):
         ...
         return {...}
@@ -40,12 +36,14 @@ GOONBAG
         def get(self, request, \**url_params):
             return 'content'
 
+
 Since routing uses `parse <https://pypi.org/project/parse/>`_ we can even cast
 values on parse:
 
 .. code-block:: python
 
     @api.route('/math/double/{value:d}')
+    @handler
     def double(request, value):
         # Value is already an int
         return str(value * 2)
