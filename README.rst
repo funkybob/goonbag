@@ -8,6 +8,23 @@ GOONBAG
 - use stencil?
 - decorators are cool, ok?
 
+Design
+------
+
+- App processes input into a Request, and calls Handler.
+- Handler generates Response
+- App formats response for output.
+
+A request is passed to a root handler, which MUST return a Response class (or
+subclass thereof).
+
+By default the root handler is a url Routes instance.
+
+A handler may act as a middleware, modifying the Request or reacting to the
+Response as desired.
+
+Examples
+--------
 
 .. code-block:: python
 
