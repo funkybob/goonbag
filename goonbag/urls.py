@@ -30,9 +30,10 @@ class Routes:
 
         return _inner
 
-    def __call__(self, request):
+    def __call__(self, request, **kwargs):
         for pattern, handler in self.routes:
             m = pattern.parse(request.path)
             if m:
-                return handler(request, **m.named)
+                kwargs.update(m.named)
+                return handler(request, **kwargs)
         return NotFound()
