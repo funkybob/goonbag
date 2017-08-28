@@ -1,3 +1,4 @@
+
 import cgi
 from urllib.parse import parse_qs
 
@@ -42,18 +43,6 @@ class WsgiRequest(Request):
             self.environ.get('QUERY_STRING', ''),
             keep_blank_values=True
         )
-
-    @property
-    def content_type(self):
-        if self._content_type is None:
-            self._parse_content_type()
-        return self._content_type
-
-    @property
-    def content_paras(self):
-        if self._content_params is None:
-            self._parse_content_type()
-        return self._content_params
 
     def _parse_content_type(self):
         self._content_type, self._content_params = cgi.parse_header(self.environ.get('CONTENT_TYPE', ''))
