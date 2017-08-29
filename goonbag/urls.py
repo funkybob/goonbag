@@ -54,5 +54,3 @@ class TopRoutes:
                 request.path_matched += len(prefix)
                 return handler(request, **kwargs)
         return NotFound()
-
-    

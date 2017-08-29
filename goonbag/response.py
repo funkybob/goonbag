@@ -1,5 +1,7 @@
+from http.cookies import SimpleCookie
+
 from .http import STATUS
-from .utils import HeaderDict
+from .utils import HeaderDict, cached_property
 
 
 class Response(Exception):
@@ -27,6 +29,14 @@ class Response(Exception):
     @property
     def status(self):
         return '{} {}'.format(self.status_code, STATUS.get(self.status_code, ''))
+
+    @cached_property
+    def cookies(self):
+        return SimpleCookie()
+
+    def update_headers(self):
+        if 'cookies' in self.__dict__:
+            self.headers['Set-Cookie'] = self.cookies.output(header='', sep=', ').strip()
 
 #
 # Success Responses (2xx)
