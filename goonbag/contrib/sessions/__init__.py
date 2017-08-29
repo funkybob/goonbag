@@ -11,12 +11,12 @@ def get_session(self, cookie_name=None, storage=None):
         return storage.new(session_key)
 
 
-class Session:
+class SessionHandler:
     '''
     Attach sessions to your app using:
 
     session_storage = Storage()
-    session = Session(session_storage)
+    session = SessionHandler(session_storage)
 
     application = WsgiApplication(session)
 
@@ -49,3 +49,20 @@ class Session:
                 resp.cookies.add(self.cookie_name, request.session.key)
 
         return resp
+
+
+class Session(dict):
+    '''
+    Dict which tracks dirty status.
+    '''
+    def __init__(self, key, *args, **kwargs):
+        self.key = key
+        super().__init__(*args, **kwargs)
+        self.clean = True
+
+    def __setitem__(self, *args, **kwargs):
+        super().__setitem__(*args, **kwargs)
+        self.clean = False
+
+    def mark_dirty(self):
+        self.clean = False
