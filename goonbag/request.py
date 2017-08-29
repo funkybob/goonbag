@@ -13,6 +13,7 @@ class Request:
     query = None
     headers = None
     path = None
+    path_matched = 0
 
     @cached_property
     def raw_cookies(self):

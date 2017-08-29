@@ -31,9 +31,28 @@ class Routes:
         return _inner
 
     def __call__(self, request, **kwargs):
+        path = request.path[request.path_matched:]
         for pattern, handler in self.routes:
-            m = pattern.parse(request.path)
+            m = pattern.parse(path)
             if m:
                 kwargs.update(m.named)
                 return handler(request, **kwargs)
         return NotFound()
+
+
+class TopRoutes:
+    '''
+    A top-level router for selecting a router based on path prefix ONLY.
+    '''
+    def __init__(self, **kwargs):
+        self.routes = kwargs
+
+    def __call__(self, request, **kwargs):
+        path = request.path[request.path_matched:]
+        for prefix, handler in self.routes.items():
+            if path.startswith(prefix):
+                request.path_matched += len(prefix)
+                return handler(request, **kwargs)
+        return NotFound()
+
+    
