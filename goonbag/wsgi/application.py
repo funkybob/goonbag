@@ -12,6 +12,9 @@ class WsgiApplication(Application):
 
         response = self.dispatch(self.routes, request)
 
+        # Update headers with cookies
+        response.update_headers()
+
         start_response(response.status, response.headers.items())
 
         value = response.content
