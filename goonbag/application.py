@@ -4,6 +4,8 @@ from .response import Response, InternalServerError
 
 
 class Application:
+    request_class = None
+
     def __init__(self, routes, **config):
         self.routes = routes
         self.config = config

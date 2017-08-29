@@ -5,9 +5,10 @@ from .request import WsgiRequest
 
 class WsgiApplication(Application):
     encoding = 'utf-8'
+    request_class = WsgiRequest
 
     def __call__(self, env, start_response):
-        request = WsgiRequest(env)
+        request = self.request_class(env)
 
         response = self.dispatch(self.routes, request)
 
