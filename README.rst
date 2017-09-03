@@ -18,7 +18,7 @@ Design
 A request is passed to a root handler, which MUST return a Response class (or
 subclass thereof).
 
-By default the root handler is a url Routes instance.
+Typically the root handler is a url Routes instance.
 
 A handler may act as a middleware, modifying the Request or reacting to the
 Response as desired.
@@ -72,5 +72,5 @@ To make a WSGI Application:
 
     from goonbag.wsgi import WsgiApplication
 
-    application = WsgiApplication(routes=api)
+    application = WsgiApplication(root=api)
 

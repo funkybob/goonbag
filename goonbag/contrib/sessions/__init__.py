@@ -35,8 +35,8 @@ class SessionHandler:
         '''
         getter = partial(get_session, cookie_name=self.cookie_name, storage=self.storage)
         app.requset_class.session = cached_property(getter)
-        self.inner = app.routes
-        app.routes = self
+        self.inner = app.root
+        app.root = self
 
     def __call__(self, request, **kwargs):
         resp = self.inner(request, **kwargs)

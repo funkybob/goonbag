@@ -10,7 +10,7 @@ class WsgiApplication(Application):
     def __call__(self, env, start_response):
         request = self.request_class(env)
 
-        response = self.dispatch(self.routes, request)
+        response = self.dispatch(self.root, request)
 
         # Update headers with cookies
         response.update_headers()
