@@ -82,9 +82,9 @@ class HttpResponseRedirection(Response):
 class LocationHeaderMixin:
     '''Many 3xx responses require a Location header'''
     def __init__(self, location, *args, **kwargs):
-        self['Location'] = location
+        self.headers['Location'] = location
 
-    url = property(lambda self: self['Location'])
+    url = property(lambda self: self.headers['Location'])
 
 
 class MultipleChoices(HttpResponseRedirection):
@@ -159,7 +159,7 @@ class NotFound(HttpResponseClientError):
 class MethodNotAllowed(HttpResponseClientError):
     def __init__(self, permitted_methods, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self['Allow'] = ', '.join(permitted_methods)
+        self.headers['Allow'] = ', '.join(permitted_methods)
 
     status_code = STATUS.METHOD_NOT_ALLOWED
 
