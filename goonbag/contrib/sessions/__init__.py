@@ -34,7 +34,7 @@ class SessionHandler:
         Make ourselves the root handler.
         '''
         getter = partial(get_session, cookie_name=self.cookie_name, storage=self.storage)
-        app.requset_class.session = cached_property(getter)
+        app.requset_class.session = cached_property(getter, name='session')
         self.inner = app.root
         app.root = self
 
