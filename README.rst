@@ -56,8 +56,7 @@ Examples
         def get(self, request, \**url_params):
             return 'content'
 
-    @api.route('/baz/')
-    handler = MyHAndler()
+    @api.route('/baz/')(MyHandler())
 
 Since routing uses `parse <https://pypi.org/project/parse/>`_ we can even cast
 values on parse:
