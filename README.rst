@@ -36,23 +36,28 @@ Examples
     @handler
     def handler(request):
         ...
-        return content: iterable
+        # a str or iterable response implies text/html response,
+        # and will be encoded utf-8
+        return content
 
 
     @api.route('/baz/data')
     @handler.json
     def handler(request):
         ...
+        # a dict return indicates it needs JSON serialising, and a JSON content type
         return {...}
 
 
-    @api.route('/baz/')
+    # Class-based views are also available.
     class MyHandler(Handler):
         default_content_type = 'application/json'
 
         def get(self, request, \**url_params):
             return 'content'
 
+    @api.route('/baz/')
+    handler = MyHAndler()
 
 Since routing uses `parse <https://pypi.org/project/parse/>`_ we can even cast
 values on parse:
